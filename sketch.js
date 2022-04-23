@@ -4,13 +4,39 @@ let zombies = [];
 let zombieSpawnTime = 300;
 let zombieMaxSpeed = 2;
 let frame = 0
-let score = 0; // add this
+let score = 0;
+let gameState = 'title';
 function setup() {
   createCanvas(700, 700);
   player = new Player();
 }
 
 function draw() {
+
+  switch (gameState) {
+    /* Each 'screen' that you want should be defined with a word,
+    this word will correspond to a 'case' as seen below. The case
+    will be followed by all of functions you want within that screen
+    and end with a 'break;'. */
+    case 'title':
+      titleScreen();
+      break;
+    case 'restart':
+      restart();
+      break;
+    case 'gameover':
+      gameOver();
+      break;
+}
+
+
+
+function restart() {
+  //player = new Player();
+  //zombies = [];
+  //zombieSpawnTime = 300;
+  //zombieMaxSpeed = 2;
+  //score = 0; // don't forget to reset the score :D
   background(100, 100, 100);
   rectMode(CENTER);
   player.draw();
@@ -22,7 +48,7 @@ function draw() {
     zombies[i].update();
 
     if (zombies[i].ateYou()) {
-      restart();
+      gameOver();
       break;
     }
 
@@ -47,15 +73,43 @@ function draw() {
   textSize(40);
   text(score, width/2, 100);
 }
-
-function restart() {
-  player = new Player();
-  zombies = [];
-  zombieSpawnTime = 300;
-  zombieMaxSpeed = 2;
-  score = 0; // don't forget to reset the score :D
 }
 
 function mouseClicked() {
   player.shoot();
+}
+function gameOver() {
+  background(240, 0 ,0);
+  stroke(255);
+  fill(255);
+  textSize(75);
+  textAlign(CENTER);
+  text('GAME OVER', width*0.5, height*0.33);
+  textSize(25);
+  text('Press "R" To Restart Game', width*0.5, height*0.66);
+
+
+
+}
+function titleScreen() {
+  background(255, 215, 0);
+stroke(255);
+fill(255);
+textSize(75);
+textAlign(CENTER);
+text('Hot Takes', width*0.5, height*0.33);
+textSize(25);
+text('Press "R" To Start Game', width*0.5, height*0.66);
+}
+function keyReleased() {
+  if (gameState === 'title') {
+    if (key === 'r' || key === 'R' ) {
+      gameState = 'restart';
+
+    }
+  } else if (gameState === 'gameover') {
+    if (key === 'r' || key === 'R' ) {
+      gameState = 'restart';
+    }
+  }
 }
