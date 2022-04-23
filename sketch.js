@@ -9,6 +9,15 @@ let gameState = 'title';
 function setup() {
   createCanvas(700, 700);
   player = new Player();
+  jpImage = loadImage("assets/pot.png")
+  jp1Image = loadImage("assets/pot1.png")
+  jp2Image = loadImage("assets/pot2.png")
+
+  jp = createSprite(0, 0 , 20, 20)
+
+  var myAnimation = jp.addAnimation('floating', 'assets/pot3.png', 'assets/pot0.png')
+
+  jp.addAnimation('moving', 'assets/pot1.png', 'assets/pot2.png')
 }
 
 function draw() {
@@ -72,6 +81,8 @@ function restart() {
   textAlign(CENTER);
   textSize(40);
   text(score, width/2, 100);
+
+
 }
 }
 

@@ -8,8 +8,10 @@ class Player {
   draw() {
     push();
     translate(this.pos.x, this.pos.y);
-    rotate(this.angle);
-    rect(0, 0, 20, 20);
+    //rrotate(this.angle);
+        scale(0.25);
+    drawSprites();
+
     pop();
 
     for (let bullet of this.bullets) {  // add this
