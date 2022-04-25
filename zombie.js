@@ -21,8 +21,9 @@ class Zombie {
       fill(100, 255, 100);
       let angle = atan2(player.pos.y - this.pos.y, player.pos.x - this.pos.x);
       translate(this.pos.x, this.pos.y);
-      rotate(angle);
-      rect(0, 0, 20, 20);
+      //rotate(angle);
+        scale(0.25);
+      drawSprites(dm);
       pop();
   }
 

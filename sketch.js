@@ -9,15 +9,24 @@ let gameState = 'title';
 function setup() {
   createCanvas(700, 700);
   player = new Player();
-  jpImage = loadImage("assets/pot.png")
-  jp1Image = loadImage("assets/pot1.png")
-  jp2Image = loadImage("assets/pot2.png")
-
-  jp = createSprite(0, 0 , 20, 20)
+  jpImage = loadImage("assets/pot.png");
+  jp1Image = loadImage("assets/pot1.png");
+  jp2Image = loadImage("assets/pot2.png");
+  dmImage = loadImage('assets/demon sprite0.png');
+  dmImage1 = loadImage('assets/demon sprite0.png');
+  title = loadImage("assets/title.png");
+  title1 = loadImage("assets/title screen wip.png");
+  jp = createSprite(0, 0 , 20, 20);
 
   var myAnimation = jp.addAnimation('floating', 'assets/pot3.png', 'assets/pot0.png')
 
   jp.addAnimation('moving', 'assets/pot1.png', 'assets/pot2.png')
+
+  dm = createSprite(0, 0, 20, 20)
+
+  var myAnimation = dm.addAnimation('floating', 'assets/demon sprite0.png', 'assets/demon sprite1.png')
+
+  dm.addAnimation('moving', 'assets/demon sprite0.png', 'assets/demon sprite1.png')
 }
 
 function draw() {
@@ -62,7 +71,7 @@ function restart() {
     }
 
     if (player.hasShot(zombies[i])) {
-      score++; // add this
+      score++;
       zombies.splice(i, 1);
     }
   }
@@ -103,14 +112,16 @@ function gameOver() {
 
 }
 function titleScreen() {
-  background(255, 215, 0);
+    background(title1, 255, 215, 0);
+
+  background(title, 255, 215, 0);
 stroke(255);
 fill(255);
 textSize(75);
 textAlign(CENTER);
-text('Hot Takes', width*0.5, height*0.33);
+
 textSize(25);
-text('Press "R" To Start Game', width*0.5, height*0.66);
+text('Press "R" To Start Game', width*0.5, height*0.86);
 }
 function keyReleased() {
   if (gameState === 'title') {

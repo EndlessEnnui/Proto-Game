@@ -10,7 +10,7 @@ class Player {
     translate(this.pos.x, this.pos.y);
     //rrotate(this.angle);
         scale(0.25);
-    drawSprites();
+    drawSprites(jp);
 
     pop();
 
