@@ -8,6 +8,8 @@ class Player {
   draw() {
     push();
     translate(this.pos.x, this.pos.y);
+    //camera.position.x = this.pos.x
+    //camera.position.y = this.pos.y
     //rrotate(this.angle);
         scale(0.25);
     drawSprites(jp);
@@ -39,15 +41,32 @@ class Player {
       ySpeed = 2;
     }
     this.pos.add(xSpeed, ySpeed);
-    this.angle = atan2(mouseY - this.pos.y, mouseX - this.pos.x); // add this
+    this.angle = atan2(mouseY - this.pos.y, mouseX - this.pos.x);
+
+
   }
 
-  shoot() { // add this
+  shoot() {
     this.bullets.push(new Bullet(this.pos.x, this.pos.y, this.angle));
+  }
+  shoot2() {
+      this.bullets.push(new Bullet(this.pos.x, this.pos.y, this.angle - 5));
+  }
+  shoot3() {
+      this.bullets.push(new Bullet(this.pos.x, this.pos.y, this.angle + 5));
   }
   hasShot(zombie) {
   for (let i = 0; i < this.bullets.length; i++) {
     if (dist(this.bullets[i].x, this.bullets[i].y, zombie.pos.x, zombie.pos.y) < 15) {
+      this.bullets.splice(i, 1);
+      return true;
+    }
+  }
+  return false;
+}
+  hasShot(demon1) {
+  for (let i = 0; i < this.bullets.length; i++) {
+    if (dist(this.bullets[i].x, this.bullets[i].y, demon1.pos.x, demon1.pos.y) < 15) {
       this.bullets.splice(i, 1);
       return true;
     }

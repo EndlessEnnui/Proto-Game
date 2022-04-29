@@ -1,11 +1,19 @@
 let player;
 let zombies = [];
-
+let demon1 = [];
 let zombieSpawnTime = 300;
 let zombieMaxSpeed = 2;
+let upgrade;
+let demon1SpawnTime = 600;
+let demon1MaxSpeed = 1;
 let frame = 0
 let score = 0;
 let gameState = 'title';
+var price = true
+var SCENE_W = 1600;
+var SCENE_H = 800;
+var bg;
+let bl;
 function setup() {
   createCanvas(700, 700);
   player = new Player();
@@ -14,19 +22,37 @@ function setup() {
   jp2Image = loadImage("assets/pot2.png");
   dmImage = loadImage('assets/demon sprite0.png');
   dmImage1 = loadImage('assets/demon sprite0.png');
+  dm1 = loadImage('assets/demon1.png')
   title = loadImage("assets/title.png");
   title1 = loadImage("assets/title screen wip.png");
+  bullet = loadImage("assets/bullet.png");
+  peppers0 = loadImage('assets/peppers0');
+    peppers1 = loadImage('assets/peppers1');
+      peppers2 = loadImage('assets/peppers2');
   jp = createSprite(0, 0 , 20, 20);
+  var myAnimation = jp.addAnimation('floating', 'assets/pot3.png', 'assets/pot0.png');
+  jp.addAnimation('moving', 'assets/pot1.png', 'assets/pot2.png');
+  jp.frameDelay = 200000;
 
-  var myAnimation = jp.addAnimation('floating', 'assets/pot3.png', 'assets/pot0.png')
+  dm = createSprite(0, 0, 20, 20);
+  var myAnimation = dm.addAnimation('floating', 'assets/demon sprite0.png', 'assets/demon sprite1.png');
+  dm.addAnimation('moving', 'assets/demon sprite0.png', 'assets/demon sprite1.png');
+  dm.frameDelay = 200000;
 
-  jp.addAnimation('moving', 'assets/pot1.png', 'assets/pot2.png')
+  dm1 = createSprite (0, 0, 40, 40);
+  var myAnimation = dm1.addAnimation('floating', 'assets/demon1.png', 'assets/demon2.png');
+  dm1.addAnimation('moving', 'assets/demon2.png', 'assets/demon1.png');
+  dm1.frameDelay = 200000;
 
-  dm = createSprite(0, 0, 20, 20)
 
-  var myAnimation = dm.addAnimation('floating', 'assets/demon sprite0.png', 'assets/demon sprite1.png')
 
-  dm.addAnimation('moving', 'assets/demon sprite0.png', 'assets/demon sprite1.png')
+  //create some background for visual reference
+
+  //bl = createSprite (Bullet.pos.x, Bullet.pos.y, 5);
+
+  //var myAnimation = bl.addAnimation('floating', 'assets/bullet.png', 'bullet2.png')
+
+  //bl.addAnimation('moving', 'assets/bullet.png', 'bullet2.png')
 }
 
 function draw() {
@@ -85,6 +111,39 @@ function restart() {
     zombieMaxSpeed += 0.1;
   }
 
+  for (let i = demon1.length - 1; i >= 0; i--) {
+    demon1[i].draw();
+    demon1[i].update();
+
+    if (demon1[i].ateYou()) {
+      gameState = 'gameover'
+      break;
+    }
+
+    if (player.hasShot(demon1[i])) {
+      score = score + 2;
+      demon1.splice(i, 1);
+    }
+  }
+
+  if (frame >= demon1SpawnTime) {
+    demon1.push(new Demon1(random(demon1MaxSpeed)));
+    demon1SpawnTime *= 1.05;
+    frame = 0;
+  }
+  if (frameCount % 1000 == 0) {
+    demon1MaxSpeed += 0.01;
+  }
+  //bg = new Group();
+  //for(var i=0; i<80; i++)
+  //{
+    //create a sprite and add the 3 animations
+    //var peppers = createSprite(random(-width, SCENE_W+width), random(-height, SCENE_H+height));
+    //cycles through rocks 0 1 2
+    //peppers.addAnimation('normal', 'assets/peppers'+i%3+'.png');
+    //bg.add(peppers);
+  //}
+
   frame++;
   // add these
   textAlign(CENTER);
@@ -97,7 +156,14 @@ function restart() {
 
 function mouseClicked() {
   player.shoot();
+  if (upgrade >= 1){
+    player.shoot2();
+  }
+  if (upgrade >= 2){
+    player.shoot3();
+  }
 }
+
 function gameOver() {
   background(240, 0 ,0);
   stroke(255);
@@ -130,8 +196,16 @@ function keyReleased() {
 
     }
   } else if (gameState === 'gameover') {
-    if (key === 'r' || key === 'R' ) {
+    if (key === 't' || key === 'T' ) {
       gameState = 'restart';
     }
+  } if (score >= 10 && key === 'b' || key ==='B' && price === true) {
+    upgrade = 1
+    score = score - 10
+    price = false
+    }
+  } if (score >=50 && key === 'b' || key ==='B' && price === false) {
+    upgrade = 2
+    score = score - 50
+    price = true
   }
-}
