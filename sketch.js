@@ -9,14 +9,15 @@ let demon1MaxSpeed = 1;
 let frame = 0
 let score = 0;
 let gameState = 'title';
-var price = true
-var SCENE_W = 1600;
-var SCENE_H = 800;
 var bg;
 let bl;
 function setup() {
-  createCanvas(700, 700);
+  canvas = createCanvas(windowWidth, windowHeight);
+  canvas.parent('myCanvas');
   player = new Player();
+  t = "Press R to start"
+  bg = loadImage("assets/Background.png")
+  myFont = loadFont("assets/PublicPixel.ttf");
   jpImage = loadImage("assets/pot.png");
   jp1Image = loadImage("assets/pot1.png");
   jp2Image = loadImage("assets/pot2.png");
@@ -25,6 +26,8 @@ function setup() {
   dm1 = loadImage('assets/demon1.png')
   title = loadImage("assets/title.png");
   title1 = loadImage("assets/title screen wip.png");
+  lose = loadImage("assets/Lose.png");
+  lose1 = loadImage("assets/LoseTomb.png");
   bullet = loadImage("assets/bullet.png");
   peppers0 = loadImage('assets/peppers0');
     peppers1 = loadImage('assets/peppers1');
@@ -56,7 +59,7 @@ function setup() {
 }
 
 function draw() {
-
+  textFont(myFont);
   switch (gameState) {
     /* Each 'screen' that you want should be defined with a word,
     this word will correspond to a 'case' as seen below. The case
@@ -81,7 +84,7 @@ function restart() {
   //zombieSpawnTime = 300;
   //zombieMaxSpeed = 2;
   //score = 0; // don't forget to reset the score :D
-  background(100, 100, 100);
+  background(bg, 255, 215, 0);
   rectMode(CENTER);
   player.draw();
   player.update();
@@ -116,8 +119,8 @@ function restart() {
     demon1[i].update();
 
     if (demon1[i].ateYou()) {
-      gameState = 'gameover'
-      break;
+      gameState = 'gameover';
+
     }
 
     if (player.hasShot(demon1[i])) {
@@ -148,7 +151,7 @@ function restart() {
   // add these
   textAlign(CENTER);
   textSize(40);
-  text(score, width/2, 100);
+  text(score, width/2, 75);
 
 
 }
@@ -160,19 +163,29 @@ function mouseClicked() {
     player.shoot2();
   }
   if (upgrade >= 2){
+    player.shoot2();
     player.shoot3();
   }
 }
 
+function mouseDragged(){
+  if (upgrade >= 3){
+      player.shoot();
+  }
+
+}
+
 function gameOver() {
-  background(240, 0 ,0);
+  background(lose, 255, 215, 0);
+
+background(lose1, 255, 215, 0);
   stroke(255);
   fill(255);
   textSize(75);
   textAlign(CENTER);
-  text('GAME OVER', width*0.5, height*0.33);
-  textSize(25);
-  text('Press "R" To Restart Game', width*0.5, height*0.66);
+
+  textSize(20);
+  text(t, width*0.25, height*0.76);
 
 
 
@@ -190,22 +203,29 @@ textSize(25);
 text('Press "R" To Start Game', width*0.5, height*0.86);
 }
 function keyReleased() {
-  if (gameState === 'title') {
+  if (gameState === 'title' || gameState === 'gameover') {
     if (key === 'r' || key === 'R' ) {
       gameState = 'restart';
 
     }
-  } else if (gameState === 'gameover') {
-    if (key === 't' || key === 'T' ) {
-      gameState = 'restart';
+  }
+  if (gameState === 'restart') {
+    if (key === '4' || key === '6' ) {
+    upgrade = 4
     }
-  } if (score >= 10 && key === 'b' || key ==='B' && price === true) {
+  }
+
+   if (score >= 10 && key === 'b' || key ==='B') {
     upgrade = 1
     score = score - 10
-    price = false
+
     }
-  } if (score >=50 && key === 'b' || key ==='B' && price === false) {
+   if (score >=50 && key === 'v' || key ==='V') {
     upgrade = 2
     score = score - 50
-    price = true
-  }
+    }
+    if (score >= 100 && key === 'c' || key === 'C') {
+    upgrade = 3
+    score = score - 100
+}
+}
