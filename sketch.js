@@ -12,7 +12,7 @@ let gameState = 'title';
 var bg;
 let bl;
 function setup() {
-  canvas = createCanvas(windowWidth/2, windowHeight);
+  canvas = createCanvas(700, 700);
   canvas.parent('myCanvas');
   player = new Player();
   t = "Press R to start"
@@ -95,7 +95,7 @@ function restart() {
     zombies[i].update();
 
     if (zombies[i].ateYou()) {
-      gameOver();
+      gameState = 'gameover';
       break;
     }
 
@@ -191,6 +191,11 @@ background(lose1, 255, 215, 0);
 
 }
 function titleScreen() {
+  player = new Player();
+  zombies = [];
+  zombieSpawnTime = 300;
+  zombieMaxSpeed = 2;
+  score = 0; // don't forget to reset the score :D
     background(title1, 255, 215, 0);
 
   background(title, 255, 215, 0);
@@ -203,15 +208,15 @@ textSize(25);
 text('Press "R" To Start Game', width*0.5, height*0.86);
 }
 function keyReleased() {
-  if (gameState === 'title' || gameState === 'gameover') {
+  if (gameState === 'title') {
     if (key === 'r' || key === 'R' ) {
       gameState = 'restart';
 
     }
   }
-  if (gameState === 'restart') {
-    if (key === '4' || key === '6' ) {
-    upgrade = 4
+  if (gameState === 'gameover') {
+    if (key === 'r' || key === 'R' ) {
+        gameState = 'title';
     }
   }
 
