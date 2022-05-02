@@ -12,7 +12,7 @@ let gameState = 'title';
 var bg;
 let bl;
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
+  canvas = createCanvas(windowWidth/2, windowHeight);
   canvas.parent('myCanvas');
   player = new Player();
   t = "Press R to start"
